@@ -1,0 +1,232 @@
+#chat-screen {
+  background-color: #abc1d1;
+  height: 100vh;
+}
+#chat-screen .alt-header,
+#chat-screen .status-bar {
+  top: 0;
+  position: fixed;
+  width: 100%;
+  background-color: #abc1d1;
+  box-sizing: border-box;
+}
+#chat-screen .status-bar {
+  z-index: 2;
+}
+#chat-screen .alt-header {
+  top: 10px;
+  z-index: 1;
+}
+/* z-index tip
+default: 0 
+layer = order of element.
+숫자가 작을수록 낮은 layer, 클수록 위의 layer
+fixed, absolute position에 이용 가능. 
+
+message__author 와 message__time이
+status-bar와 screen-header위에 떠보일때는
+opacity말고 rgba를 활용하세요.
+opacity는 z-index에 영향을 미칩니다.*/
+@keyframes fadein {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+.main-chat {
+  margin-top: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadein 0.8s linear;
+}
+.chat__timestamp {
+  color: white;
+  background-color: #92a4b2;
+  padding: 16px;
+  border-radius: 25px;
+  font-size: 14px;
+  margin-bottom: 25px;
+}
+.message-row {
+  width: 100%;
+  /* width를 주지않으면 컨텐츠 크기만큼만 적용되서 flex박스에 끌려다니는데
+    width를 100%주면 화면 폭만큼의 크기를갖고 message-row자체는 
+    flex박스의 영향을 받지만 내부컨텐츠인 img나 message-row내부 자식들은 
+    직접적인 영향을 받지않아서 디폴트로 좌측에 정렬되는것같습니다 */
+  display: flex;
+  margin-bottom: 25px;
+}
+.message-row img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+.message__author {
+  margin-bottom: 5px;
+  display: block;
+}
+.message__info {
+  display: flex;
+  /* flex children에는 order 기능이 있다.
+display방식을 바꿀 수 있음.
+하나는 order : 0, 1, 2 ... 와 같이 순서를 정해주는 방식이다.
+하지만, flex children이 많아지면 코드를 많이 써야한다. */
+  align-items: flex-end;
+}
+.message__bubble {
+  background-color: white;
+  padding: 13px;
+  font-size: 18px;
+  border-radius: 15px;
+  border-top-left-radius: 0px;
+  /*  border-top-left-radius 처럼 꼭지점 하나를 특정해서 radius를 줄 수도 있다. */
+  margin-right: 5px;
+}
+.message__time,
+.message__author {
+  opacity: 0.8;
+  font-size: 14px;
+}
+.message-row__own {
+  justify-content: flex-end;
+}
+.message-row__own .message__bubble {
+  background-color: var(--yellow);
+  border-top-right-radius: 0px;
+  border-top-left-radius: 15px;
+  margin-right: 0px;
+  margin-left: 5px;
+}
+/* side fadein animation.
+@keyframes message-row {
+from {
+opacity: 0;
+transform: translateX(-30px);
+}
+to {
+opacity: 1;
+transform: none;
+}
+}
+
+.message-row {
+width: 100%;
+display: flex;
+margin-bottom: 25px;
+animation: message-row 1s ease-in-out;
+}
+
+@keyframes message-row--own {
+from {
+opacity: 0;
+transform: translateX(30px);
+}
+to {
+opacity: 1;
+transform: none;
+}
+}
+.message-row--own {
+justify-content: flex-end;
+animation: message-row--own 1s ease-in-out;
+} */
+.message-row__own .message__info {
+  flex-direction: row-reverse;
+}
+/* 간단하고 쿨한방법 
+.message-row--own .message__info {
+  flex-direction: row-reverse;
+}
+*/
+/* 시간과 말풍선 위치를 바꾸는 방법
+.message-row__own .message__bubble {
+  order: 1;
+}
+.message-row__own .message__time {
+  order: 0;
+}
+flex children에게 사용할 수 있다. 자식 수가 많으면 어렵다.
+*/
+.reply {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 25px;
+  box-sizing: border-box;
+  align-items: center;
+  transition: transform 0.3s ease-in-out;
+}
+.reply .reply__column:first-child {
+  width: 10%;
+}
+/*  input is inside of a column and a column dosn't haven't width.
+so (즉, column인 곳에) width를 100%를 주기 위해선, 
+먼저 input이 속해 있는 column과 그 옆의 column 모두 width가 있어야한다. */
+.reply .reply__column:last-child {
+  width: 90%;
+  position: relative;
+}
+.reply i {
+  opacity: 0.5;
+}
+.reply input {
+  padding: 14px;
+  width: 100%;
+  border: var(--main-border);
+  border-radius: 25px;
+  box-sizing: border-box;
+  transition: all 0.3s ease-in-out;
+}
+.reply__column:last-child > i,
+.reply__column:last-child button {
+  position: absolute;
+  right: 3px;
+  top: 3px;
+}
+.reply__column:last-child > i {
+  right: 50px;
+  top: 15px;
+}
+.reply__column button {
+  background-color: var(--yellow);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+.reply__column button:focus,
+.reply__column button:active {
+  outline: none;
+}
+.reply__column button i {
+  opacity: 1;
+}
+
+.reply .reply__column:first-child,
+.reply .fa-smile-wink,
+.reply button {
+  transition: opacity 0.3s ease-in-out;
+}
+.reply:focus-within .reply__column:first-child,
+.reply:focus-within .fa-smile-wink,
+.reply:focus-within button {
+  opacity: 0;
+}
+.reply input:focus {
+  width: 98vw;
+  transform: translateX(-12%) translateY(-80px);
+}
+/* chat.css 에서 input에 css를 줬다가 index.html에서도 문제 발생!!
+따라서 항상 부모(.reply)를 써주는 것이 안전하다. */
+.reply:focus-within {
+  transform: translateY(80px);
+}
